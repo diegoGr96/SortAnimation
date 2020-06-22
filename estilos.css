@@ -2,12 +2,14 @@
     padding: 0;
     margin: 0;
     background: #000;
+    font-family: 'Roboto', sans-serif;
 }
 
 #container{
     margin: 20px auto;
     width: 90%;
-    height: 90vh;
+    height: 85vh;
+    text-align: center;
 }
 
 #container span{
@@ -16,10 +18,29 @@
     background: #fff;
 }
 
+#buttons{
+    width: auto;
+    text-align: center;
+}
 button{
+    font-size: 20px;
     background: #fff;
     color: #000;
-    margin-left: 45vw;
+    
     padding: 0 20px;
     text-align: center;
 }
+
+#btnSort{
+    display: none;
+}
+
+#messageContainer{
+    text-align: center;
+}
+
+#messageContainer p{
+    margin-top: 10px;
+    color: #fff;
+}
+
