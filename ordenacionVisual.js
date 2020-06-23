@@ -17,7 +17,6 @@ class element{
 */
 var arraySpans = [];
 var isOrdered = false;
-var isOrderedMessage = false;
 var nComparaciones;
 var delay;
 
@@ -25,7 +24,7 @@ function shuffle(){
     document.getElementById("container").innerHTML = "";
     arraySpans = [];
     isOrdered = false;
-    isOrderedMessage = false;
+
 
     for(let i = 0; i < 3200; i++){
         let span = document.createElement("span");
@@ -43,6 +42,7 @@ function mostrarArray(){
 }
 
 function ordenarBurbuja(){
+    isOrdered = true;
     let aux;
     nComparaciones = 0;
     
@@ -61,31 +61,60 @@ function ordenarBurbuja(){
             arraySpans[i].span.style.background  ="green";
         },0.1);
     }
-    isOrdered = true;
+    
 }
 
-var btnOrdenar = document.getElementById("btnSort");
+function ordenarInsercion(){
+    isOrdered = true;
+    let aux;
+    nComparaciones = 0;
+    for(let i = 1; i < arraySpans.length; i++){
+       setTimeout(() => {
+        arraySpans[i].span.style.background  ="green";
+        aux = arraySpans[i];
+        nComparaciones++;
+        
+        for(let j = i - 1; j >= 0 && arraySpans[j].randomHeight > aux.randomHeight; j--){
+            arraySpans[j + 1] = arraySpans[j];
+            arraySpans[j] = aux;
+            nComparaciones++;
+            document.getElementById("container").insertBefore(arraySpans[j].span, arraySpans[j + 1].span);
+        }
+        }, 0.1);
+
+    }
+}
+
+var btnBubble = document.getElementById("btnBubble");
+var btnInsertion = document.getElementById("btnInsertion");
 var btnShuffle = document.getElementById("btnShuffle");
 
 btnShuffle.addEventListener('click',() => {
-    btnOrdenar.style.display = "inline";
+    btnBubble.style.display = "inline";
+    btnInsertion.style.display = "inline";
     document.getElementById("pMessage").innerHTML = "";
     shuffle();
     mostrarArray();
 });
 
-btnOrdenar.addEventListener('click', () =>{
+function sort(method){
     if(!isOrdered){
-        ordenarBurbuja();
-        setTimeout(() => {
-            document.getElementById("pMessage").innerHTML = 
-            "Number of elements " + arraySpans.length + " - Number of comparisons: " + nComparaciones;
-        }, 0.1);
+        method();
+         setTimeout(() => {
+             let pMessage = document.getElementById("pMessage");
+             pMessage.style.display = "block";
+             pMessage.innerHTML = "Number of elements " + arraySpans.length + " - Number of comparisons: " + nComparaciones; 
+         }, 0.1);
         console.log(arraySpans);
-    }else{
-        if(!isOrderedMessage){
-            isOrderedMessage = true;
-        }
+        console.log(nComparaciones);
     }
+}
+
+btnBubble.addEventListener('click', () =>{
+    sort(ordenarBurbuja);
+});
+
+btnInsertion.addEventListener('click', () =>{
+    sort(ordenarInsercion);
 });
 

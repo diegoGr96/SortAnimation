@@ -31,7 +31,7 @@ button{
     text-align: center;
 }
 
-#btnSort{
+#btnBubble, #btnInsertion{
     display: none;
 }
 
@@ -42,5 +42,6 @@ button{
 #messageContainer p{
     margin-top: 10px;
     color: #fff;
+    display: none;
 }
 
