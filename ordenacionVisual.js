@@ -13,19 +13,21 @@ class element{
 }
 
 /*
-    Create an Array with 1200 spans with random height's
+    Create an Array with 3200 spans with random height's
 */
 var arraySpans = [];
 var isOrdered = false;
 var isOrderedMessage = false;
-var secondsToSort;
+var nComparaciones;
+var delay;
 
 function shuffle(){
+    document.getElementById("container").innerHTML = "";
     arraySpans = [];
     isOrdered = false;
     isOrderedMessage = false;
 
-    for(let i = 0; i < 1200; i++){
+    for(let i = 0; i < 3200; i++){
         let span = document.createElement("span");
         let randomHeight = Math.floor(Math.random()*101);
         span.style.height = randomHeight + "%";
@@ -35,46 +37,39 @@ function shuffle(){
 }
 
 function mostrarArray(){
-    document.getElementById("container").innerHTML = "";
     for(let i = 0; i < arraySpans.length; i++ ){
         document.getElementById("container").appendChild(arraySpans[i].span);
     }
-    console.log("Ordenando el array....");
 }
 
 function ordenarBurbuja(){
     let aux;
-    let nComparaciones = 0;
-    let date = new Date();
-    let miliBefore = date.getMilliseconds();
+    nComparaciones = 0;
     
     for(let i = 0; i < arraySpans.length - 1; i++){
-        for(let j = 0; j < arraySpans.length - 1; j++){
-            nComparaciones++;
-            if(arraySpans[j].randomHeight > arraySpans[j + 1].randomHeight){
-                aux = arraySpans[j];
-                arraySpans[j] = arraySpans[j + 1];
-                arraySpans[j + 1] = aux;
-                
-                // mostrarArray();
+        delay = setTimeout(() => {
+            arraySpans[i].span.style.background  ="green";
+            for(let j = 0; j < arraySpans.length - 1; j++){
+                nComparaciones++;
+                if(arraySpans[j].randomHeight > arraySpans[j + 1].randomHeight){
+                    aux = arraySpans[j];
+                    arraySpans[j] = arraySpans[j + 1];
+                    arraySpans[j + 1] = aux;
+                    document.getElementById("container").insertBefore(arraySpans[j].span, arraySpans[j + 1].span);
+                }
             }
-        }
+            arraySpans[i].span.style.background  ="green";
+        },0.1);
     }
-    date = new Date();
-    let miliAfter = date.getMilliseconds();
     isOrdered = true;
-    
-    secondsToSort = (miliAfter - miliBefore)/1000;
-    console.log(`Milis antes: ${miliBefore} - Milis despues: ${miliAfter} - Segundos para ordenar: ${secondsToSort}`);
 }
-
 
 var btnOrdenar = document.getElementById("btnSort");
 var btnShuffle = document.getElementById("btnShuffle");
 
 btnShuffle.addEventListener('click',() => {
-    document.getElementById("messageContainer").innerHTML = "";
     btnOrdenar.style.display = "inline";
+    document.getElementById("pMessage").innerHTML = "";
     shuffle();
     mostrarArray();
 });
@@ -82,19 +77,15 @@ btnShuffle.addEventListener('click',() => {
 btnOrdenar.addEventListener('click', () =>{
     if(!isOrdered){
         ordenarBurbuja();
-        mostrarArray();
-        // var timeoutID = setTimeout(mostrarArray, 2000);
-        let messageAlreadySorted = document.createElement("p");
-        messageAlreadySorted.id  = "pAlreadySorted";
-        messageAlreadySorted.innerHTML = "Seconds to Sort: " + secondsToSort;
-        document.getElementById("messageContainer").appendChild(messageAlreadySorted);
+        setTimeout(() => {
+            document.getElementById("pMessage").innerHTML = 
+            "Number of elements " + arraySpans.length + " - Number of comparisons: " + nComparaciones;
+        }, 0.1);
+        console.log(arraySpans);
     }else{
         if(!isOrderedMessage){
-            document.getElementById("pAlreadySorted").innerHTML = "Seconds to Sort: " + secondsToSort + " - The array is already sorted."; 
             isOrderedMessage = true;
         }
-
     }
-
 });
 

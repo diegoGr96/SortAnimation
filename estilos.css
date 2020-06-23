@@ -7,14 +7,14 @@
 
 #container{
     margin: 20px auto;
-    width: 90%;
+    width: 99%;
     height: 85vh;
     text-align: center;
 }
 
 #container span{
     display: inline-block;
-    padding: 0.5px;
+    padding: 0.3px;
     background: #fff;
 }
 
